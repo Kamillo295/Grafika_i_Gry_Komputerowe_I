@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Szachownica Canvas</title>
+    <style>
+        /* Prosty margines i ramka dla estetyki */
+        body { margin: 20px; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+
+    <canvas id="szachownica" width="400" height="400"></canvas>
+
+    <script>
+        function draw() {
+            // Pobranie elementu canvas i jego kontekstu 2D
+            var canvas = document.getElementById("szachownica");
+            var ctx = canvas.getContext("2d");
+            
+            var rozmiarPola = 50; // Rozmiar pojedynczego kwadratu
+
+            // Pętla generująca szachownicę (8 rzędów x 8 kolumn)
+            for (var rzad = 0; rzad < 8; rzad++) {
+                for (var kolumna = 0; kolumna < 8; kolumna++) {
+                    
+                    // Jeśli suma rzędu i kolumny jest parzysta, pole jest białe.
+                    // Jeśli nieparzysta, pole jest czarne.
+                    if ((rzad + kolumna) % 2 === 0) {
+                        ctx.fillStyle = "white";
+                    } else {
+                        ctx.fillStyle = "black";
+                    }
+                    
+                    // Rysowanie prostokąta (x, y, szerokość, wysokość)
+                    var x = kolumna * rozmiarPola;
+                    var y = rzad * rozmiarPola;
+                    ctx.fillRect(x, y, rozmiarPola, rozmiarPola);
+                }
+            }
+        }
+
+        // Uruchomienie funkcji draw po załadowaniu całej strony
+        window.onload = draw;
+    </script>
+
+</body>
+</html>
