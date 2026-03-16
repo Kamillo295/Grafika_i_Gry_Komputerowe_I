@@ -49,22 +49,22 @@
         // Punkt startowy - dolny szpic serca
         graphics.moveTo(300, 550);
 
-        // Lewa dolna krawędź (punkt kontrolny daleko w lewo, koniec w połowie boku)
+        // Lewa dolna krawędź 
         graphics.quadraticCurveTo(100, 400, 100, 250);
 
-        // Lewy górny łuk (punkt kontrolny nad lewym bokiem, koniec we wcięciu)
+        // Lewy górny łuk 
         graphics.quadraticCurveTo(100, 50, 300, 170);
 
-        // Prawy górny łuk (punkt kontrolny nad prawym bokiem, koniec na prawym boku)
+        // Prawy górny łuk 
         graphics.quadraticCurveTo(500, 50, 500, 250);
 
-        // Prawa dolna krawędź (punkt kontrolny daleko w prawo, koniec w szpicu)
+        // Prawa dolna krawędź 
         graphics.quadraticCurveTo(500, 400, 300, 550);
 
         graphics.fill();
         graphics.stroke();
 
-        // 2. Oczy (użycie niestandardowych funkcji zadeklarowanych poniżej)
+        // 2. Oczy
         graphics.fillStyle = "white";
         graphics.fillCircle(230, 230, 25);
         graphics.fillCircle(370, 230, 25);
@@ -95,7 +95,7 @@
         graphics.strokeLine(360, 335, 350, 350);
         graphics.strokeLine(350, 350, 360, 365);
 
-        // Ząb
+        // Zęby
         graphics.fillStyle = "white";
         graphics.fillRect(280, 358, 20, 20); // Ząb 1
         graphics.strokeStyle = "black";
@@ -106,7 +106,7 @@
         graphics.strokeStyle = "black";
         graphics.strokeRect(300, 358, 20, 20);
         
-    } // end of draw()
+    }
     
     
     /**
