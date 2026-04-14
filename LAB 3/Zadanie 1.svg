@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+          "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1000px" height="800px"
+     viewBox="0 0 500 400" preserveAspectRatio="xMidYMid">
+
+    <defs>
+
+        <g id="kolo">
+            <!-- Okrąg -->
+            <circle cx="0" cy="0" r="20" fill="none" stroke="black" stroke-width="1" />
+            <line x1="-20" y1="0" x2="20" y2="0" stroke="black" stroke-width="1" />
+            <line x1="0" y1="-20" x2="0" y2="20" stroke="black" stroke-width="1" />
+            <line x1="-14.14" y1="-14.14" x2="14.14" y2="14.14" stroke="black" stroke-width="1" />
+            <line x1="-14.14" y1="14.14" x2="14.14" y2="-14.14" stroke="black" stroke-width="1" />
+
+            <!-- Animacja obrotu koła -->
+            <animateTransform attributeName="transform" type="rotate"
+                              from="0" to="360" dur="4"
+                              repeatCount="indefinite" />
+        </g>
+
+        <!-- Definicja podstawy w kształcie trójkąta -->
+        <g id="podstawa">
+            <polygon points="-15,75 15,75 0,0" />
+        </g>
+
+        <!-- Definicja konstrukcji z belką i dwoma kołami -->
+        <g id="konstrukcja">
+            <rect x="-60" y="-4" width="120" height="8" fill="red" />
+            <use xlink:href="#kolo" transform="translate(-60, 0)" />
+            <use xlink:href="#kolo" transform="translate(60, 0)" />
+        </g>
+    </defs>
+
+    <!-- Pierwszy obiekt -->
+    <g transform="translate(100, 150)">
+        <use xlink:href="#podstawa" fill="purple" />
+        <use xlink:href="#konstrukcja" transform="rotate(0)" />
+    </g>
+
+    <!-- Drugi obiekt -->
+    <g transform="translate(250, 250)">
+        <use xlink:href="#podstawa" fill="blue" transform="scale(1.2, 1.6)" />
+        <use xlink:href="#konstrukcja" transform="rotate(15)" />
+    </g>
+
+    <!-- Trzeci obiekt -->
+    <g transform="translate(400, 100)">
+        <use xlink:href="#podstawa" fill="green" />
+        <use xlink:href="#konstrukcja" transform="rotate(-20)" />
+    </g>
+
+</svg>
