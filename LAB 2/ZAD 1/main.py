@@ -18,7 +18,7 @@ try:
     cat = pygame.transform.scale(oryginal_img, (300, 300))
 except:
     cat = pygame.Surface((300, 300))
-    cat.fill((255, 0, 0))
+    cat.fill(ZIELONY)
 
 win.fill(CZARNY)
 srodek_x = (width - cat.get_width()) // 2
