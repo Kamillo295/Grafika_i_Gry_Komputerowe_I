@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>CS 424 Lab 9</title>
+
+<!-- Biblioteki Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.115/build/three.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.115/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.115/examples/js/loaders/GLTFLoader.js"></script>
+
+<script>
+"use strict";
+
+// Podstawowe obiekty sceny
+var canvas, renderer, scene, camera; 
+var controls;  
+var animating = false;  
+var frameNumber = 0;  
+
+// Elementy karuzeli
+var floor; 
+var pole1, pole2, pole3, pole4, pole5;
+var pivot1, pivot2, pivot3, pivot4, pivot5;
+var roof;
+var roof2;
+
+// Renderowanie sceny
+function render() {
+    renderer.render(scene, camera);
+}
+
+function createWorld() {
+    
+    renderer.setClearColor("black"); 
+    scene = new THREE.Scene();
+    
+    // Kamera
+    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 40;
+    camera.position.y = 20;
+    
+    // Światło
+    var light = new THREE.DirectionalLight();
+    light.position.set(0,0,1);
+    camera.add(light);
+    scene.add(camera);
+    
+    //------------------- Obiekty ----------------------
+
+// Podstawa karuzeli
+    floor =  new THREE.Mesh(
+        new THREE.CylinderGeometry(13.5, 13.5, 0.6, 64), 
+        new THREE.MeshPhongMaterial({
+            color: 0x441c84,
+            specular: 0x222222,
+            shininess: 8,
+            shading: THREE.FlatShading
+        })
+    );
+    floor.rotation.y = Math.PI/12;
+    scene.add(floor);
+    
+    // Kula z teksturą Ziemi
+    var geometry = new THREE.SphereGeometry(3.7, 32, 32);
+    var material = new THREE.MeshBasicMaterial({ 
+        map: new THREE.TextureLoader().load('resources/earth.jpg') 
+    });
+    var sphere = new THREE.Mesh(geometry, material);
+    sphere.position.y = 3.8;
+    scene.add(sphere);
+    
+    // Materiał dla drążków
+    var poleMaterial = new THREE.MeshPhongMaterial({
+        color: 0x7c5426,
+        specular: 0x222222,
+        shininess: 8,
+        shading: THREE.FlatShading
+    });
+
+    var poleGeo = new THREE.CylinderGeometry(0.3,0.3,7.5,30,1);
+
+    // Tworzenie drążków
+    pole1 = new THREE.Mesh(poleGeo, poleMaterial);
+    pole1.position.set(11.2, 3.9, 0.55);
+    pole1.rotation.y = Math.PI/12;
+
+    pole2 = new THREE.Mesh(poleGeo, poleMaterial);
+    pole2.position.set(-9.5, 3.9, 6.2);
+    pole2.rotation.y = Math.PI/12;
+
+    pole3 = new THREE.Mesh(poleGeo, poleMaterial);
+    pole3.position.set(2.95, 3.9, 11);
+    pole3.rotation.y = Math.PI/12;
+
+    pole4 = new THREE.Mesh(poleGeo, poleMaterial);
+    pole4.position.set(4, 3.9, -10.5);
+    pole4.rotation.y = Math.PI/12;
+
+    pole5 = new THREE.Mesh(poleGeo, poleMaterial);
+    pole5.position.set(-8.7, 3.9, -7.1);
+    pole5.rotation.y = Math.PI/12;
+        
+    // Dach stożkowy
+    roof = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.1,12,3,30,1),
+        new THREE.MeshPhongMaterial({
+            color: 0x441c84,
+            specular: 0x222222,
+            shininess: 8,
+            shading: THREE.FlatShading
+        })
+    );
+    roof.position.y = 9.1;
+    scene.add(roof);
+        
+    // Dolna część dachu
+    roof2 = new THREE.Mesh(
+        new THREE.CylinderGeometry(12,12,0.3,200,1),
+        new THREE.MeshPhongMaterial({
+            color: 0x441c84,
+            specular: 0x222222,
+            shininess: 8,
+            shading: THREE.FlatShading
+        })
+    );
+    roof2.position.y = 7.5;
+    scene.add(roof2);
+    
+    // Pivoty (do obracania koni)
+    pivot1 = new THREE.Group(); scene.add(pivot1); pivot1.add(pole1);
+    pivot2 = new THREE.Group(); scene.add(pivot2); pivot2.add(pole2);
+    pivot3 = new THREE.Group(); scene.add(pivot3); pivot3.add(pole3);
+    pivot4 = new THREE.Group(); scene.add(pivot4); pivot4.add(pole4);
+    pivot5 = new THREE.Group(); scene.add(pivot5); pivot5.add(pole5);
+
+    // Loader modeli koni
+    var loader = new THREE.GLTFLoader();
+    
+    // Każdy koń dodany do osobnego pivota
+    loader.load('https://threejs.org/examples/models/gltf/Horse.glb', function (gltf) {
+        gltf.scene.scale.multiplyScalar(0.03);
+        gltf.scene.position.set(11.2, 1, 0.55);
+        
+        pivot1.add(gltf.scene);
+        render();
+    });
+
+    loader.load('https://threejs.org/examples/models/gltf/Horse.glb', function (gltf) {
+        gltf.scene.scale.multiplyScalar(0.03);
+        gltf.scene.position.set(-9.5, 1, 6.2);
+        gltf.scene.rotation.y = -15;
+        pivot2.add(gltf.scene);
+        render();
+    });
+
+    loader.load('https://threejs.org/examples/models/gltf/Horse.glb', function (gltf) {
+        gltf.scene.scale.multiplyScalar(0.03);
+        gltf.scene.position.set(2.95, 1, 11);
+        gltf.scene.rotation.y = -1.2;
+        pivot3.add(gltf.scene);
+        render();
+    });
+
+    loader.load('https://threejs.org/examples/models/gltf/Horse.glb', function (gltf) {
+        gltf.scene.scale.multiplyScalar(0.03);
+        gltf.scene.position.set(4, 1, -10.5);
+        gltf.scene.rotation.y = 0.9;
+        pivot4.add(gltf.scene);
+        render();
+    });
+
+    loader.load('https://threejs.org/examples/models/gltf/Horse.glb', function (gltf) {
+        gltf.scene.scale.multiplyScalar(0.03);
+        gltf.scene.position.set(-8.7, 1, -7.1);
+        gltf.scene.rotation.y = -3.5;
+        pivot5.add(gltf.scene);
+        render();
+    });
+} 
+
+// Aktualizacja animacji (obrót)
+function updateForFrame() {
+    var speed = -0.01; 
+    
+    floor.rotation.y += speed;
+    roof.rotation.y += speed;
+    roof2.rotation.y += speed;
+    
+    pivot1.rotation.y += speed;
+    pivot2.rotation.y += speed;
+    pivot3.rotation.y += speed;
+    pivot4.rotation.y += speed;
+    pivot5.rotation.y += speed;
+}
+
+// Sterowanie kamerą myszką
+function installOrbitControls() {
+    controls = new THREE.OrbitControls(camera,canvas);
+    controls.noPan = true; 
+    controls.noZoom = true;
+    controls.staticMoving = true;
+
+    function move() {
+        controls.update();
+        if (!animating) render();
+    }
+
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+
+    function touch(event) {
+        if (event.touches.length == 1) move();
+    }
+
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+// Checkbox animacji
+function doAnimateCheckbox() {
+   var run = document.getElementById("animateCheckbox").checked;
+   if (run != animating) {
+       animating = run;
+       if (animating) requestAnimationFrame(doFrame);
+   }
+}
+
+// Pętla animacji
+function doFrame() {
+    if (animating) {
+        frameNumber++;
+        updateForFrame();
+        render();
+        requestAnimationFrame(doFrame);
+    }
+}
+
+// Inicjalizacja
+function init() {
+    try {
+        canvas = document.getElementById("glcanvas");
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: false
+        });
+    }
+    catch (e) {
+        document.getElementById("message").innerHTML =
+            "<b>Sorry, an error occurred:<br>" + e + "</b>";
+        return;
+    }
+
+    document.getElementById("animateCheckbox").checked = false;
+    document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
+
+    createWorld();
+    installOrbitControls();
+    render();
+}
+</script>
+</head>
+
+<body onload="init()">
+
+<h2>Three.js - Karuzela</h2>
+
+<p>
+<label><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
+<b style="margin-left:50px">Use the mouse to rotate the model.</b>
+</p>
+
+<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white">
+<canvas width=1200 height=600 id="glcanvas"></canvas>
+</div>
+
+</body>
+</html>
