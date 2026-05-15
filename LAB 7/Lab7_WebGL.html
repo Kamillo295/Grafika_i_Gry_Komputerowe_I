@@ -40,7 +40,7 @@
         
         gl_Position = vec4(x, y, 0.0, 1.0);
         gl_PointSize = u_pointSize;
-        v_color = vec4(a_color, 1.0); //  przekazanie koloru z pełną nieprzezroczystością (alfa = 1.0)
+        v_color = vec4(a_color, 1.0); //  przekazanie koloru z pełną nieprzezroczystością
     }
 </script>
 
@@ -58,17 +58,17 @@
         //  obliczenie odległości aktualnego piksela od środka kwadratu punktu
         float dist = distance( vec2(0.5), gl_PointCoord );
         
-        if (u_style == 1) { // Styl koła (ostre krawędzie)
+        if (u_style == 1) {
             if (dist > 0.5) {
                 discard;
             }
             gl_FragColor = v_color;
         } 
-        else if (u_style == 2) { // Styl gładko zanikającego koła
+        else if (u_style == 2) {
             if (dist > 0.5) {
                 discard;
             }
-            float alpha = 1.0 - (dist * 2.0); // alfa zmienia się od 1.0 w środku do 0.0 na krawędzi
+            float alpha = 1.0 - (dist * 2.0); 
             gl_FragColor = vec4(v_color.rgb, v_color.a * alpha);
         } 
         else { // Domyślny styl kwadratu (u_style == 0)
@@ -165,7 +165,7 @@ function createData() {
         velocities[2*i] = speed*Math.sin(angle);
         velocities[2*i+1] = speed*Math.cos(angle);
         
-        // ---  Przypisanie losowych kolorów (R, G, B) do każdego nowo utworzonego punktu ---
+        // ---  Przypisanie losowych kolorów do każdego nowo utworzonego punktu ---
         colors[3*i] = Math.random();
         colors[3*i+1] = Math.random();
         colors[3*i+2] = Math.random();
@@ -217,19 +217,19 @@ function doKey(evt) {
         }
     }
     // ---  Obsługa klawiatury dla dodanych funkcji ---
-    else if (key == 67) { // Klawisz 'C' włącza/wyłącza losowe kolory
+    else if (key == 67) { 
         useRandomColors = !useRandomColors;
         if (!isRunning) render();
     }
-    else if (key == 49) { // Klawisz '1' włącza styl Kwadratu
+    else if (key == 49) { 
         currentStyle = 0;
         if (!isRunning) render();
     }
-    else if (key == 50) { // Klawisz '2' włącza styl Koła
+    else if (key == 50) {
         currentStyle = 1;
         if (!isRunning) render();
     }
-    else if (key == 51) { // Klawisz '3' włącza styl Zanikającego koła
+    else if (key == 51) { 
         currentStyle = 2;
         if (!isRunning) render();
     }

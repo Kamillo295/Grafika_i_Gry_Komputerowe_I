@@ -140,9 +140,9 @@ var rotateX = 0, rotateY = 0;   // Overal rotation of model, in radians, set by 
  * Draws the image, which consists of either the "world" or a closeup of the "car".
  */
 
-/* Dodano nową funkcję addBlade(), której nie ma w lab12. 
-   Definiuje ona wygląd pojedynczej łopatki wiatraka (złożonej z dwóch stożków).
-*/
+
+// addBlade() definiuje  wygląd pojedynczej łopatki wiatraka
+
 function addBlade()
 {
     pushMatrix();
@@ -163,12 +163,11 @@ function addBlade()
     popMatrix();
 }
 
-// Dodano zmienne sterujące animacją obrotu i liczbą ramion wiatraka
+// zmienne sterujące animacją obrotu i liczbą ramion wiatraka
 var rotateEachFrame = 0.5; 
 let wierzcholki = 4;
 
-/* Funkcja draw() została całkowicie przebudowana w porównaniu do lab12.
-   Zamiast jednego sześcianu, buduje złożoną scenę hierarchiczną.
+/* Funkcja draw() buduje złożoną scenę hierarchiczną.
 */
 function draw() {
     gl.clearColor(0,0,0,1);
